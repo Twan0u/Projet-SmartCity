@@ -8,15 +8,15 @@
 
 ## Logo V1
 
-![](.\logo_transparent.png)
+<img src=".\logo_transparent.png" alt="10%" style="zoom:25%;" />
 
 
 
 ## Version Mobile V3
 
-![](.\Android - Login Screen V3.png)
+<img src=".\Android - Login Screen V3.png" alt="1" style="zoom:67%;" />
 
-![](.\Android - signup Screen V3.png)
+<img src=".\Android - signup Screen V3.png" alt="7" style="zoom:67%;" />
 
 ## Version Web V1
 
