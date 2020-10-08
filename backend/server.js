@@ -5,6 +5,8 @@ var path = require('path');
 //var mysql = require('mysql');
 var session = require('express-session');
 
+var mesFcts = require('./tools.js');
+
 /*var connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
@@ -29,18 +31,33 @@ app.use(bodyParser.json());
 
 app.get('/dashboard',(req,res)=>{
   if (req.session.loggedin) {
-    res.sendFile(path.join(__dirname + '/dashboard2.html'));
+    res.sendFile(path.join(__dirname + '/dashboard.html'));
   } else {
     res.redirect('/');
   }
-
 })
 
 app.get('/',(req,res)=>{
-  res.sendFile(path.join(__dirname + '/login.html'));
+    if (req.session.loggedin) {
+        res.redirect('/dashboard');
+    } else {
+        res.sendFile(path.join(__dirname + '/login.html'));
+    }
 })
 
-app.post('/',(req,res)=>{
+app.get('/logout',(req,res)=>{
+    if (req.session.loggedin) {
+        req.session.destroy();
+        res.redirect('/');
+        //todo message successfull log out
+    } else {
+        res.redirect('/');
+        //todo message successfull log out
+    }
+})
+
+
+app.post('/auth',(req,res)=>{
   let userMail = req.body.userMail;
 	let password = req.body.userPassword;
   console.log(userMail +" - "+ password)
@@ -48,25 +65,22 @@ app.post('/',(req,res)=>{
 		//connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			//if (results.length > 0) {
       console.log(userMail +" - "+ password)
-      if(userMail == 'ant.lamb.al@gmail.com'){
+      if(mesFcts.login(userMail, password)){
 				req.session.loggedin = true;
 				req.session.userMail = userMail;
 				res.redirect('/dashboard');
-			} /*else {
-				response.send('Incorrect Username and/or Password!');
+			} else {
+				res.send('Incorrect Username and/or Password!');
+				//todo message erreur
 			}
-			response.end();
-		});
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();*/
 	}else{
     res.redirect('/');
+    //todo message erreur, pas de nom d'utilisateur ou de mot de passe
   }
 })
 
 app.get('*',(req,res)=>{
-  res.send("404");
+    res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.listen(80);
