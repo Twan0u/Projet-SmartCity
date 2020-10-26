@@ -14,7 +14,8 @@
 
 </head>
 <style>
-    body,.hero{
+
+    body{
         background: rgb(40,199,250);background: linear-gradient(58deg, rgba(40,199,250,1) 0%, rgba(255,48,79,1) 100%);
     }
 
@@ -37,7 +38,7 @@
             <div id="navMenu" class="navbar-menu">
                 <div class="navbar-end">
                     <a class="navbar-item" href="/dashboard">Acceuil</a>
-                    <a class="navbar-item" href="#">Mes Classes</a>
+                    <a class="navbar-item" href="#">Ma Classe</a>
                     <a class="navbar-item" href="#">Mes Interrogations</a>
                     <div class="navbar-item">
                         <div class="buttons">
@@ -80,12 +81,6 @@
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child box">
-                                <p class="title">3</p>
-                                <p class="subtitle">Classes</p>
-                            </article>
-                        </div>
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
                                 <p class="title">12</p>
                                 <p class="subtitle">Interrogations <span class="tag is-danger">(non signées)</span> </p>
                             </article>
@@ -100,30 +95,31 @@
                 </section>
                 <div class="columns">
                     <div class="column is-6">
+
                         <div class="card events-card">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                    Events
+                                    Tâches
                                 </p>
                                 <a href="#" class="card-header-icon" aria-label="more options">
-                  <span class="icon">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </a>
+                                    <span class="icon">
+                                        <a class="button is-small is-primary" href="#"><i class="fa fa-plus"></i></a>
+                                    </span>
+                                </a>
                             </header>
                             <div class="card-table">
                                 <div class="content">
                                     <table class="table is-fullwidth is-striped">
                                         <tbody>
                                             <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td>12 Octobre (3B) : Piscine  </td>
-                                                <td class="level-right"><a class="button is-small is-danger" href="#"><i class="fa fa-minus"></i></a></td>
+                                                <td width="5%"><i class="fa fa-check"></i></td>
+                                                <td>22 Octobre : Ramener la coupe à la maison  </td>
+                                                <td class="level-right"><a class="button is-small is-info" href="#"><i class="fa fa-chevron-right"></i></a></td>
                                             </tr>
                                             <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td>25 Octobre (2A) : Interrogation de mathématique</td>
-                                                <td class="level-right"><a class="button is-small is-danger" href="#"><i class="fa fa-minus"></i></a></td>
+                                                <td width="5%"><i class="fa fa-check"></i></td>
+                                                <td>25 Octobre : Autre tâche blabla</td>
+                                                <td class="level-right"><a class="button is-small is-info" href="#"><i class="fa fa-chevron-right"></i></a></td>
                                             </tr>
 
                                         </tbody>
@@ -134,7 +130,49 @@
                                 <a href="#" class="card-footer-item">Tout Voir</a>
                             </footer>
                         </div>
+
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Evenements
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                                    <span class="icon">
+                                        <a class="button is-small is-primary" href="#"><i class="fa fa-plus"></i></a>
+                                    </span>
+                                </a>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-calendar"></i></td>
+                                            <td>12 Octobre : Piscine  </td>
+                                            <td class="level-right"><a class="button is-small is-info" href="#"><i class="fa fa-chevron-right"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-calendar"></i></td>
+                                            <td>25 Octobre : Interrogation de mathématique</td>
+                                            <td class="level-right"><a class="button is-small is-info" href="#"><i class="fa fa-chevron-right"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-calendar"></i></td>
+                                            <td>29 Octobre : Interrogation de Français</td>
+                                            <td class="level-right"><a class="button is-small is-info" href="#"><i class="fa fa-chevron-right"></i></a></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="#" class="card-footer-item">Tout Voir</a>
+                            </footer>
+                        </div>
+
                     </div>
+
                     <div class="column is-6">
                         <div class="card">
                             <header class="card-header">
@@ -162,31 +200,6 @@
                             </div>
                         </div>
 
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                    Recherche d'une classe
-                                </p>
-                                <a href="#" class="card-header-icon" aria-label="more options">
-                                  <span class="icon">
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                  </span>
-                                </a>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    <div class="control has-icons-left has-icons-right">
-                                        <input class="input is-large" type="text" placeholder="">
-                                        <span class="icon is-medium is-left">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                        <span class="icon is-medium is-right">
-                                            <i class="fa fa-users"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
