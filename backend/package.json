@@ -1,20 +1,26 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projet SmartCity de l'Hennalux",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-promise-router": "^4.0.1",
     "express-session": "^1.17.1",
-    "mysql": "^2.18.1"
+    "pg": "^8.4.2",
+    "pg-hstore": "^2.3.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon server.js",
-    "update" : "cd .. && git pull",
-    "start": "sudo node server.js"
+    "dev": "nodemon server.js",
+    "update": "cd .. && git pull",
+    "start": "sudo node server.js",
+    "initDB": "node scripts/JS/initDB.js"
   },
   "author": "",
   "license": "ISC"

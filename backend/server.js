@@ -1,18 +1,10 @@
 let express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
-var path = require('path');
-//var mysql = require('mysql');
-var session = require('express-session');
+let path = require('path');
+let session = require('express-session');
 
-var mesFcts = require('./tools.js');
-
-/*var connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',
-	password : '',
-	database : 'nodelogin'
-});*/
+let mesFcts = require('./tools.js');
 
 //MOTEUR DE TEMPLATES
 
@@ -58,13 +50,10 @@ app.get('/logout',(req,res)=>{
 
 
 app.post('/auth',(req,res)=>{
-  let userMail = req.body.userMail;
-	let password = req.body.userPassword;
+
   console.log(userMail +" - "+ password)
 	if (userMail && password) {
-		//connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			//if (results.length > 0) {
-      console.log(userMail +" - "+ password)
+
       if(mesFcts.login(userMail, password)){
 				req.session.loggedin = true;
 				req.session.userMail = userMail;
@@ -80,7 +69,23 @@ app.post('/auth',(req,res)=>{
 })
 
 app.get('*',(req,res)=>{
+    maDb.getProduit(req,res);
     res.sendFile(path.join(__dirname + '/404.html'));
 })
 
 app.listen(80);
+
+/*
+const Router = require('./route');
+const express = require('express');
+const app = express();
+const port = 80;
+
+app.use(express.json());
+app.use(Router);
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+});
+*/
+
