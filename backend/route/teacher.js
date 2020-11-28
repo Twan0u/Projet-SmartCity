@@ -1,11 +1,6 @@
-const TeacherControleur = require("../controleur/teacher");
-const Router = require("express-promise-router");
-const router = new Router;
+const TeacherController = require("../controleur/teacher");
+const router = require("express").Router();
 
-
-//router.get('/:id', ProduitControleur.getProduit);
-//router.post('/', ProduitControleur.postProduit);
-//router.patch('/', ProduitControleur.updateProduit);
-//router.delete('/', ProduitControleur.deleteProduit);
+router.get('/:id', TeacherController.getTeacher);
 
 module.exports = router;

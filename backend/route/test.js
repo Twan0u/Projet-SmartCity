@@ -1,9 +1,9 @@
-const ProduitControleur = require("../controleur/test");
+const TestControleur = require("../controleur/test");
 const router = require("express").Router();
 
-router.get('/:id', ProduitControleur.getProduit);
-router.post('/', ProduitControleur.postProduit);
-router.patch('/', ProduitControleur.updateProduit);
-router.delete('/', ProduitControleur.deleteProduit);
+router.get('/:id', TestControleur.getTest);
+router.post('/', TestControleur.postTest);
+router.patch('/', TestControleur.updateTest);
+router.delete('/', TestControleur.deleteTest);
 
 module.exports = router;

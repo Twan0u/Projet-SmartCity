@@ -1,12 +1,14 @@
+//id, maxValue,subjectName,idclass
 //permets de simuler une base de données
-const produits = [
-    {id: 1, nom: "Playstation 4", prix:400},
-    {id: 2, nom: "Xbox One", prix:399.9},
-    {id: 3, nom: "Nintendo Switch", prix:349.99}
+//todo
+const tests = [
+    {id: 1, maxValue:20,subjectName:"test",idclass:1},
+    {id: 2, maxValue:20,subjectName:"test",idclass:1},
+    {id: 3, maxValue:20,subjectName:"test",idclass:1}
 ]
 
-module.exports.getProduit = (id) => {
-    const resultats = produits.filter(p => p.id === id);
+module.exports.getTest = (id) => {
+    const resultats = tests.filter(p => p.id === id);
     if(resultats.length > 0){
         return resultats[0];
     } else {
@@ -14,29 +16,32 @@ module.exports.getProduit = (id) => {
     }
 }
 
-module.exports.postProduit = (id, nom, prix) => {
-    produits.push({
+module.exports.postTest = (id, maxValue,subjectName,idclass) => {
+    tests.push({
         id,
-        nom,
-        prix
+        maxValue,
+        subjectName,
+        idclass
     });
     return true;
 }
 
-module.exports.updatePrix = (id, prix) => {
+module.exports.updateTest = (id, maxValue,subjectName) => {
     for(let i = 0; i < produits.length; i++){
-        if(produits[i].id === id){
-            produits[i].prix = prix;
+        if(tests[i].id === id){
+            tests[i].maxValue = maxValue;
+            tests[i].subjectName = subjectName;
+            tests[i].idclass = idclass;
             return true;
         }
     }
     return false;
 }
 
-module.exports.deleteProduit = (id) => {
-    for (let i = 0; i < produits.length; i++){
-        if(produits[i].id === id){
-            produits.splice(i, 1);
+module.exports.deleteTest = (id) => {
+    for (let i = 0; i < tests.length; i++){
+        if(tests[i].id === id){
+            tests.splice(i, 1);
             return true;
         }
     }
