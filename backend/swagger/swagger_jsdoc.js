@@ -5,7 +5,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'API Smartclass', // Title (required)
+            title: 'API SmartClass', // Title (required)
             version: '1.0.0', // Version (required)
         },
     },

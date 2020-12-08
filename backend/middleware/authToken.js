@@ -1,6 +1,20 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *      bearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
+ *  responses:
+ *      401:
+ *          description: JWT is
+ *      MissingJWT:
+ *          description: le JWT n'est pas présent
+ */
 module.exports.authToken = async (req, res, next) => {
     const authHeader = req.header('Authorization');//get the token from user
     const token = authHeader && authHeader.split(' ')[1];

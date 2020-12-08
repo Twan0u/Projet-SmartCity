@@ -1,26 +1,14 @@
-/*
- IMPORTS
- */
 const express = require('express');
-
-const Router = require('./route');
-
 const app = express();
-const port = 4000;
+const Router = require('./route');
+require('dotenv').config(); //utilisé pour le port de l'application
 
-/*
-    MIDDLEWARES
- */
+//Middlewares
 app.use(express.json());
 
-/*
-    ROUTES
- */
+//Routes
 app.use(Router);
 
-/*
-    OTHERS
- */
-app.listen(port, () => {
-    console.log(`The app is listening on port : ${port}`);
+app.listen(process.env.API_PORT, () => {
+    console.log(`The app is listening on port : ${process.env.API_PORT}`);
 });
