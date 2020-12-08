@@ -1,23 +1,23 @@
 const router = require("express").Router();
 
-const ClassRouter = require('./class');
-const EventRouter = require('./event');
-const PupilRouter = require('./pupil');
-const ResultRouter = require('./result');
-const SchoolSubjectRouter = require('./schoolSubject');
-const TaskRouter = require('./task');
-const TeacherRouter = require('./teacher');
-const TestRouter = require('./test');
 const LoginRouter = require('./login');
+const ClassRouter = require('./class');
+//const EventRouter = require('./event');
+//const ResultRouter = require('./result');
+//const SchoolSubjectRouter = require('./schoolSubject');
+//const TaskRouter = require('./task');
+//const TestRouter = require('./test');
 
-router.use("/class", ClassRouter);
-router.use("/event", EventRouter);
-router.use("/pupil", PupilRouter);
-router.use("/result", ResultRouter);
-router.use("/schoolSubject", SchoolSubjectRouter);
-router.use("/task", TaskRouter);
-router.use("/teacher", TeacherRouter);
-router.use("/test", TestRouter);
+
 router.use("/login",LoginRouter);
+router.use("/class", ClassRouter);
+//router.use("/events", EventRouter);
+//router.use("/results", ResultRouter);
+//router.use("/schoolSubject", SchoolSubjectRouter);
+//router.use("/tasks", TaskRouter);
+
+//router.use("/test", TestRouter);
+
+router.use("*",(req, res) => {res.sendStatus(404);}); //le cas ou la route demandée n'existe pas
 
 module.exports = router;

@@ -1,37 +1,21 @@
-module.exports.getTeacherClass = async (idTeacher, client) => {
+module.exports.getClass = async (idClass, client) => {
     const {rows: classes} = await client.query(`
-        SELECT year,letter 
+        SELECT ID, Year, Letter
         FROM Class 
-        WHERE idTeacher = $1`, [idTeacher]);
+        WHERE ID = $1`, [idClass]);
     return classes[0];
 }
-module.exports.getPupilClass = async (idPupil, client) => {
-    const {rows: classes} = await client.query(`
-        SELECT year,letter 
-        FROM Class 
-        WHERE id IN (
-            SELECT IdClass 
-            FROM Pupil 
-            WHERE id=$1)`, [idPupil]);
-    return classes[0];
-}
-module.exports.getTeacher = async (idPupil, client) => {
-    const {rows: classes} = await client.query(`
-        SELECT FirstName,Lastname,Login 
-        FROM Class 
-        WHERE id IN (
-            SELECT IdClass 
-            FROM Pupil 
-            WHERE id=$1)`, [idPupil]);
-    return classes[0];
-}
-module.exports.getPupils = async (idTeacher, client) => {
+module.exports.getPupilsInClass = async (idClass, client) => {
     const {rows: pupils} = await client.query(`
-        SELECT id,firstname,lastname 
+        SELECT id, FirstName, LastName
         FROM Pupil
-        WHERE IdClass IN (
-            SELECT ID 
-            FROM Class 
-            WHERE IdTeacher = $1)`, [idTeacher]);
+        WHERE idClass = $1`, [idClass]);
     return pupils;
+}
+module.exports.getClassTeacher = async (idClass, client) => {
+    const {rows: classes} = await client.query(`
+        SELECT Login, FirstName, Lastname
+        FROM Teacher 
+        WHERE IdClass = $1`, [idClass]);
+    return classes[0];
 }

@@ -3,17 +3,9 @@ const ClassModel = require ("../modele/class");
 
 module.exports.getClass = async (req, res) => {
     const client = await pool.connect();
+    const idClass = req.user.idclass
     try{
-        const role = req.user.role;
-        let classes = undefined;
-
-        if (role === 'teacher'){
-            classes = await ClassModel.getTeacherClass(req.user.id, client);
-        }
-        if(role === 'pupil'){
-            classes = await ClassModel.getPupilClass(req.user.id, client);
-        }
-
+        let classes = await ClassModel.getClass(idClass, client);
         if(classes !== undefined){
             res.status(200).json(classes);
         } else {
@@ -26,31 +18,19 @@ module.exports.getClass = async (req, res) => {
         client.release();
     }
 }
-module.exports.getClassTeacher = async (req, res) => {
+module.exports.getPupilsInClass = async (req, res) => {
     const client = await pool.connect();
+    const idClass = req.user.idclass
     try{
-        let teacher = await ClassModel.getTeacher(req.user.id, client);
-
-        if(teacher !== undefined){
-            res.status(200).json(teacher);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (error){
-        res.sendStatus(500);
-    } finally {
-        client.release();
-    }
-}
-module.exports.getPupils = async (req, res) => {
-    const client = await pool.connect();
-    try{
-        let pupils = await ClassModel.getPupils(req.user.id, client);
+        console.log(req.user)
+        let pupils = await ClassModel.getPupilsInClass(idClass, client);
+        console.log(pupils)
         if(pupils !== undefined){
             res.status(200).json(pupils);
         } else {
             res.sendStatus(404);
         }
+
     } catch (error){
         res.sendStatus(500);
     } finally {
@@ -58,3 +38,21 @@ module.exports.getPupils = async (req, res) => {
     }
 }
 
+
+module.exports.getClassTeacher = async (req, res) => {
+    const client = await pool.connect();
+    const idClass = req.user.idclass
+    try{
+        let teacher = await ClassModel.getClassTeacher(idClass, client);
+        if(teacher !== undefined){
+            res.status(200).json(teacher);
+        } else {
+            res.sendStatus(404);
+        }
+
+    } catch (error){
+        res.sendStatus(500);
+    } finally {
+        client.release();
+    }
+}
