@@ -1,19 +1,9 @@
-const EventModele = require("../modele/event");
+const EventModel = require("../modele/event");
 
-module.exports.getEvent = (req, res) => {
-    const idTexte = req.params.id; //attention ! Il s'agit de texte !
-    const id = parseInt(idTexte);
-
-    if(isNaN(id)){
-        res.sendStatus(400);
-    } else {
-        try{
-            const event = EventModele.getEvent(id);
-            res.json(event);
-        } catch (error){
-            res.sendStatus(404);
-        }
-    }
+module.exports.getEvents = (req, res) => {
+    idClass
+    client
+    const event = EventModel.getEvents(idClass,client);//todo
 }
 module.exports.postEvent= (req, res) => {
     const body = req.body;
@@ -45,3 +35,20 @@ module.exports.deleteEvent = (req, res) => {
         res.sendStatus(500);
     }
 }
+/*
+* module.exports.getEvents = (req, res) => {
+    const idTexte = req.params.id; //attention ! Il s'agit de texte !
+    const id = parseInt(idTexte);
+
+    if(isNaN(id)){
+        res.sendStatus(400);
+    } else {
+        try{
+            const event = EventModel.getEvents();//todo
+            res.json(event);
+        } catch (error){
+            res.sendStatus(404);
+        }
+    }
+}
+* */

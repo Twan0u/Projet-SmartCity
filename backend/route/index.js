@@ -8,8 +8,7 @@ const SchoolSubjectRouter = require('./schoolSubject');
 const TaskRouter = require('./task');
 const TeacherRouter = require('./teacher');
 const TestRouter = require('./test');
-
-
+const LoginRouter = require('./login');
 
 router.use("/class", ClassRouter);
 router.use("/event", EventRouter);
@@ -19,5 +18,6 @@ router.use("/schoolSubject", SchoolSubjectRouter);
 router.use("/task", TaskRouter);
 router.use("/teacher", TeacherRouter);
 router.use("/test", TestRouter);
+router.use("/login",LoginRouter);
 
 module.exports = router;

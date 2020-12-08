@@ -4,19 +4,23 @@
 const express = require('express');
 
 const Router = require('./route');
-const Identification = require('./middleware/identification');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 /*
- MIDDLEWARES
+    MIDDLEWARES
  */
 app.use(express.json());
-app.use(Identification.identification);
 
+/*
+    ROUTES
+ */
 app.use(Router);
 
+/*
+    OTHERS
+ */
 app.listen(port, () => {
     console.log(`The app is listening on port : ${port}`);
 });

@@ -1,18 +1,19 @@
-const PupilModele = require("../modele/pupil");
+const pool = require("../modele/database");
+const PupilModel = require("../modele/pupil");
 
-module.exports.getPupil = (req, res) => {
-
-    const idTexte = req.params.id; //attention ! Il s'agit de texte !
-    const id = parseInt(idTexte);
-
-    if(isNaN(id)){
-        res.sendStatus(400);
-    } else {
-        try{
-            const pupil = PupilModele.getPupil(id);
-            res.json(pupil);
-        } catch (error){
+module.exports.getPupil = async (req, res) => {
+    const client = await pool.connect();
+    const id = req.params.id;
+    try{
+        const pupil = await PupilModel.getPupil(id, client);
+        if(pupil !== undefined){
+            res.status(200).json(pupil);
+        } else {
             res.sendStatus(404);
         }
+    } catch (error){
+        res.sendStatus(500);
+    } finally {
+        client.release();
     }
 }

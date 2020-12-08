@@ -1,49 +1,21 @@
-//permets de simuler une base de données
-// todo
-
-const Events = [
-    {id: 1, name: "event1", date:"27-11-2020",description: "j'en ai marre de ça",idClass:1},
-    {id: 2, name: "event2", date:"28-11-2020",description: "je suis plein en écrivant ça",idClass:1},
-    {id: 3, name: "event3", date:"29-11-2020",description: "lol créer une app pour enfants plein mort",idClass:1}
-]
-
-module.exports.getEvent = (id) => {
-    const resultats = Events.filter(p => p.id === id);
-    if(resultats.length > 0){
-        return resultats[0];
-    } else {
-        throw new Error("Aucun produit trouvé");
-    }
+module.exports.getEvents = async (idClass, client) => {
+    const {rows: events} = await client.query("SELECT id, Name, date, description FROM Event WHERE ID = $1", [idClass]);
+    return events[0];
 }
 
-module.exports.postEvent = (id, name, date, description) => {
-    Events.push({
-        id,
-        name,
-        date,
-        description
-    });
-    return true;
+module.exports.postEvent = async (name, date, description, idClass) => {
+    return await client.query("INSERT INTO Event(Name, Date, Description, IdClass)VALUES($1,$2,$3,$4)", [name, date, description, idClass]);
 }
 
-module.exports.updateEvent = (id, name, date, description) => {
-    for(let i = 0; i < Events.length; i++){
-        if(Events[i].id === id){
-            Events[i].name = name;
-            Events[i].date = date;
-            Events[i].description = description;
-            return true;
-        }
-    }
-    return false;
+module.exports.updateEvent = async (id, name, date, description) => {
+    const query =  `UPDATE Event
+        SET Name = $2
+            Date = $3
+            Description = $4
+        WHERE id = $1`;
+    return await client.query(query, [id, name, date, description]);
 }
 
-module.exports.deleteEvent = (id) => {
-    for (let i = 0; i < Events.length; i++){
-        if(Events[i].id === id){
-            Events.splice(i, 1);
-            return true;
-        }
-    }
-    return true;
+module.exports.deleteEvent = async (id) => {
+    return await client.query("DELETE FROM Event WHERE id=$1", [id, name, date, description]);
 }
