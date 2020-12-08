@@ -1,4 +1,4 @@
-/backend/node_modules/*
-/backend/.env
-*/.idea/*
+backend/node_modules/*
+.idea/*
 backend/.env
+backend/package-lock.json
