@@ -5,7 +5,7 @@ const ClassRouter = require('./class');
 //const EventRouter = require('./event');
 //const ResultRouter = require('./result');
 //const SchoolSubjectRouter = require('./schoolSubject');
-//const TaskRouter = require('./task');
+const TaskRouter = require('./task');
 //const TestRouter = require('./test');
 
 
@@ -14,7 +14,7 @@ router.use("/class", ClassRouter);
 //router.use("/events", EventRouter);
 //router.use("/results", ResultRouter);
 //router.use("/schoolSubject", SchoolSubjectRouter);
-//router.use("/tasks", TaskRouter);
+router.use("/tasks", TaskRouter);
 
 //router.use("/test", TestRouter);
 
