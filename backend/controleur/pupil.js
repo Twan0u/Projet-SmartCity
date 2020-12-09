@@ -22,9 +22,7 @@ module.exports.getPupilsInClass = async (req, res) => {
     const client = await pool.connect();
     const idClass = req.user.idclass
     try{
-        console.log(req.user)
-        let pupils = await PupilModel.getPupilsInClass(idClass, client);
-        console.log(pupils)
+        let pupils = await PupilModel.getPupilsByClass(idClass, client);
         if(pupils !== undefined){
             res.status(200).json(pupils);
         } else {

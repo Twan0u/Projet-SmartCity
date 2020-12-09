@@ -3,7 +3,7 @@ module.exports.getTeacherByID = async (id, client) => {
     return users[0];
 }
 module.exports.teacherLogin = async (username, client) => {
-    const {rows: users} = await client.query("SELECT * FROM Teacher WHERE login = $1 LIMIT 1", [username]);
+    const {rows: users} = await client.query("SELECT *,'teacher' as role FROM Teacher WHERE login = $1 LIMIT 1", [username]);
     return users[0];
 }
 /**

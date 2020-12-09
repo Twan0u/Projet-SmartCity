@@ -5,7 +5,7 @@ require('dotenv').config();
 let pool = require ("../modele/database");
 let teacherDB = require ("../modele/teacher");
 let studentDB = require ("../modele/pupil");
-let responsibleDB = require ("../modele/tutor");
+let TutorDB = require ("../modele/tutor");
 
 module.exports.getToken = async (req, res) => {
     const client = await pool.connect();
@@ -19,18 +19,12 @@ module.exports.getToken = async (req, res) => {
 
     try{
         user = await studentDB.loginPupil(username, client);
-        if(user !== undefined){
-            user.role = 'pupil';
-        }else{
+
+        if(user === undefined){
             user = await teacherDB.teacherLogin(username, client);
-            if(user !== undefined){
-                user.role = 'teacher';
-            }else{
-                user = await responsibleDB.loginTutor(username, client);
-                if(user !== undefined){
-                    user.role = 'tutor';
-                }
-            }
+        }
+        if(user === undefined){
+            user = await TutorDB.loginTutor(username, client);
         }
     } catch (error){
         return res.sendStatus(500);
@@ -43,6 +37,7 @@ module.exports.getToken = async (req, res) => {
    }else{
        if(await bcrypt.compare(password,user.password)){
            //const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '1800s' });//todo on à retiré le expire pour le dev
+           delete user.password;//prevent password to be passed in the jwt
            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
            res.json(accessToken);
            delete user.password;
@@ -51,3 +46,11 @@ module.exports.getToken = async (req, res) => {
        }
    }
 };
+
+/*
+select login,password,firstname,lastname,idclass, 'teacher' as role from teacher
+union
+select login,password,firstname,lastname,idclass, 'pupil' as role from pupil
+union
+select login,password,firstname,lastname,null as idclass, 'tutor' as role  from tutor
+* */

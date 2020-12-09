@@ -74,14 +74,12 @@ CREATE TABLE Pupil(
     FirstName varchar(255) NOT NULL,
     LastName varchar(255) NOT NULL,
     Birthdate DATE NOT NULL,
-    ParentPhone varchar(255) NOT NULL,
-    ParentMail varchar(255) NOT NULL,
     IdClass INT REFERENCES Class(ID) NOT NULL
 );
-INSERT INTO Pupil(Login, Password, FirstName, LastName, Birthdate, ParentPhone, ParentMail, IdClass)
+INSERT INTO Pupil(Login, Password, FirstName, LastName, Birthdate, IdClass)
 VALUES
-('AntoineLambert','$2b$10$Wkx2BKSmDJ2gj.mQiivWCOy7B5FxWotyvrX1D4uX4Ma2MpSaRn.TK','Antoine','Lambert','16-11-1997','0032498194975','ant.lamb.al@gmail.com',1),
-('AntoineDumont','$2b$10$Wkx2BKSmDJ2gj.mQiivWCOy7B5FxWotyvrX1D4uX4Ma2MpSaRn.TK','Antoine','Dumont','16-11-1997','0032498194975','antoine@gmail.com',1);
+('AntoineLambert','$2b$10$Wkx2BKSmDJ2gj.mQiivWCOy7B5FxWotyvrX1D4uX4Ma2MpSaRn.TK','Antoine','Lambert','16-09-1997',1),
+('AntoineDumont','$2b$10$Wkx2BKSmDJ2gj.mQiivWCOy7B5FxWotyvrX1D4uX4Ma2MpSaRn.TK','Antoine','Dumont','02-04-1995',1);
 
 DROP TABLE IF EXISTS Tutor CASCADE;
 CREATE TABLE Tutor(

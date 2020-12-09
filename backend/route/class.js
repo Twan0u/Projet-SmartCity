@@ -105,7 +105,7 @@ router.get('/teacher',authToken,permit("teacher","pupil"), TeacherController.get
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/ClassPupils'
+ *                          $ref: '#/components/schemas/Pupil'
  *          '401':
  *              description: Authorization information is missing or invalid.
  *          '403':

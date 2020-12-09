@@ -17,6 +17,6 @@ const options = {
         './route/*',
     ],
 };
-// Initialize swagger-jsdoc -> returns validated swagger spec in json format
 const swaggerSpec = swaggerJSDoc(options);
-fs.writeFileSync('./swagger/spec.json', JSON.stringify(swaggerSpec));
+//fs.writeFileSync('./swagger/spec.json', JSON.stringify(swaggerSpec));
+module.exports.swaggerDoc = swaggerSpec;
