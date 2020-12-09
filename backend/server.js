@@ -1,14 +1,16 @@
 const express = require('express');
-const app = express();
 const Router = require('./route');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const app = express();
+//variables
 require('dotenv').config(); //used to get the app port in .env file
+let httpPort = process.env.API_HTTP_PORT || 8080;
 
 //swagger
 const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('./swagger/swagger_jsdoc').swaggerDoc;
-
-//variables
-let port = process.env.API_PORT || 4000;
 
 //Middlewares
 app.use(express.json());
@@ -17,6 +19,6 @@ app.use(express.json());
 app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDoc));
 app.use(Router);
 
-app.listen(port, () => {
-    console.log(`The app is listening on port : ${port}`);
+app.listen(httpPort, () => {
+    console.log(`The app is listening on port : ${httpPort}`);
 });
