@@ -1,10 +1,3 @@
-//permets de simuler une base de données
-const tasks = [
-    {id: 1, title:"prendre affaires de piscine", type:"test", description: "piscine", date:"22-11-2020", idSchoolSubject:1, idClass:1},
-    {id: 2,  title:"task2", type:"test", description: "piscine2", date:"23-11-2020", idSchoolSubject:1, idClass:1},
-    {id: 3,  title:"t3", type:"test", description: "piscin3", date:"24-11-2020", idSchoolSubject:1, idClass:1}
-]
-
 /**
  * @swagger
  *  components:
@@ -82,40 +75,26 @@ module.exports.getWeekTasksByClassId = async (idClass, client) => {
     return tasks;
 }
 
-module.exports.postTask = (id, title, type, description, date, idSchoolSubject, idClass) => {
-    produits.push({
-        id,
-        title,
-        type,
-        description,
-        date,
-        idSchoolSubject,
-        idClass
-    });
-    return true;
+module.exports.postTask = async (title,type,date,idSubCat, idClass,client) => {
+    const {rows: id} = await client.query(`
+        INSERT INTO Task(title,type, date, idSchoolSubjectSubCategory, idClass)
+        VALUES($1,$2,$3,$4,$5)
+        RETURNING id;`, [title,type,date,idSubCat,idClass]);
+    return id;
 }
 
-module.exports.updatePrix = (id, title, type, description, date, idSchoolSubject, idClass) => {
-    for(let i = 0; i < tasks.length; i++){
-        if(tasks[i].id === id){
-            tasks[i].title = title;
-            tasks[i].type = type;
-            tasks[i].description = description;
-            tasks[i].date = date;
-            tasks[i].idSchoolSubject = idSchoolSubject;
-            tasks[i].idClass = idClass;
-            return true;
-        }
-    }
-    return false;
+module.exports.updateTask = async (id,title,type,date,idSubCat,client) => {
+    const query =  `UPDATE Task
+        SET 
+            title = $2
+            type = $3
+            date = $4
+            IdSchoolSubjectSubCategory = $5
+        WHERE id = $1`;
+    return await client.query(query, [id,title,type,date,idSubCat]);
 }
 
-module.exports.deleteTask = (id) => {
-    for (let i = 0; i < tasks.length; i++){
-        if(tasks[i].id === id){
-            tasks.splice(i, 1);
-            return true;
-        }
-    }
-    return true;
+module.exports.deleteTask = async (id,client) => {
+    return await client.query("DELETE FROM Task WHERE id=$1", [id]);
 }
+

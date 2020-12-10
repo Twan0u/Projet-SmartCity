@@ -111,12 +111,12 @@ VALUES
 
 DROP TABLE IF EXISTS Task CASCADE;
 CREATE TABLE Task(
-                     ID SERIAL PRIMARY KEY,
-                     Title Varchar(255) NOT NULL,
-                     Type Varchar(255),
-                     Date DATE NOT NULL,
-                     IdSchoolSubjectSubCategory INT REFERENCES SchoolSubjectSubCategory(ID) NOT NULL,
-                     IdClass INT REFERENCES Class(ID) NOT NULL
+    ID SERIAL PRIMARY KEY,
+    Title Varchar(255) NOT NULL,
+    Type Varchar(255),
+    Date DATE NOT NULL,
+    IdSchoolSubjectSubCategory INT REFERENCES SchoolSubjectSubCategory(ID) NOT NULL,
+    IdClass INT REFERENCES Class(ID) NOT NULL
 );
 INSERT INTO Task(Title, Date, IdSchoolSubjectSubCategory, IdClass)
 VALUES

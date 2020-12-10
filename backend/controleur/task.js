@@ -53,33 +53,50 @@ module.exports.getWeekTasks = async (req, res) => {
     }
 }
 
-module.exports.postTask = (req, res) => {
-    const body = req.body;
-    const {id, title, type, description, date, idSchoolSubject, idClass} = body;
-    const response = TaskModel.postTask(id, title, type, description, date, idSchoolSubject, idClass);
-    if(response){
-        res.sendStatus(201);
-    } else {
+module.exports.postTask = async (req, res) => {
+    const client = await pool.connect();
+    const idClass = req.user.idclass
+    const {title, type, date, idSchoolSubjectSubCategory} = req.body;
+    try{
+        await TaskModel.postTask(title, type, date, idSchoolSubjectSubCategory, idClass, client);
+        res.sendStatus(200);
+    } catch (error){
         res.sendStatus(500);
+    } finally {
+        client.release();
     }
 }
 
-module.exports.updateTask = (req, res) => {
-    const {id, title, type, description, date, idSchoolSubject, idClass} = req.body;
-    const response = TaskModel.updateTask(id, title, type, description, date, idSchoolSubject, idClass);
-    if(response){
-        res.sendStatus(204);
+module.exports.updateTask = async(req, res) => {
+    const client = await pool.connect();
+    const idClass = req.user.idclass;
+    const {title, type, date, idSchoolSubjectSubCategory} = req.body;
+    const idText = req.params.id; //attention ! Il s'agit de texte !
+    const id = parseInt(idText);
+    if(isNaN(id)){
+        res.sendStatus(400);
     } else {
-        res.sendStatus(404);
+        const response = TaskModel.updateTask(id, title, type, date, idSchoolSubjectSubCategory, idClass,client);
+        if(response){
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
     }
 }
 
-module.exports.deleteTask = (req, res) => {
-    const {id} = req.body;
-    const response = TaskModel.deleteTask(id);
-    if(response){
-        res.sendStatus(204);
+module.exports.deleteTask = async (req, res) => {
+    const client = await pool.connect();
+    const idTexte = req.params.id; //attention ! Il s'agit de texte !
+    const id = parseInt(idTexte);
+    if(isNaN(id)){
+        res.sendStatus(400);
     } else {
-        res.sendStatus(500);
+        const response = TaskModel.deleteTask(id,client);
+        if(response){
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
     }
 }
