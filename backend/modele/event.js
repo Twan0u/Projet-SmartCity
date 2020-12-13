@@ -1,6 +1,29 @@
 module.exports.getEvents = async (idClass, client) => {
     const {rows: events} = await client.query("SELECT id, Name, date, description FROM Event WHERE ID = $1", [idClass]);
-    return events[0];
+    return events;
+}
+
+module.exports.getTodayEventsByClassId = async (idClass, client) => {
+    const {rows: events} = await client.query(`
+
+        SELECT id,name,description, TO_CHAR(date, 'DD Mon YYYY') as date
+        FROM event
+        WHERE IdClass = 1
+          and date = current_date
+
+        `, [idClass]);
+    return events;
+}
+module.exports.getWeekEventsByClassId = async (idClass, client) => {
+    const {rows: events} = await client.query(`
+
+        SELECT id,name,description, TO_CHAR(date, 'DD Mon YYYY') as date
+        FROM event
+        WHERE IdClass = 1
+          and (date between (current_date + '1 day':: interval) and (current_date + '1 day':: interval + '1 week':: interval))
+
+        `, [idClass]);
+    return events;
 }
 
 module.exports.postEvent = async (name, date, description, idClass) => {
