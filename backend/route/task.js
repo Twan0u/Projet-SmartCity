@@ -241,12 +241,6 @@ router.patch('/:id',authToken,permit("teacher"), TaskController.updateTask);
  *            type: string
  *            format: JWT
  *          required: true
- *      requestBody:
- *          description: the task to add in db
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/TaskInput'
  *      responses:
  *          '200':
  *              description: Object has been added

@@ -1,3 +1,27 @@
+/**
+ * @swagger
+ *  components:
+ *   schemas:
+ *      Event:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: integer
+ *              name:
+ *                  type: string
+ *                  format: CHAR(255)
+ *              description:
+ *                  type: string
+ *                  format: CHAR(255)
+ *              date:
+ *                  type: string
+ *                  format: 'DDD MMM YYY'
+ *          example:
+ *              id: 32
+ *              name: 'Sortie au musée'
+ *              description: 'Ne pas oublier son masque'
+ *              date: '22 Dec 2020'
+ */
 module.exports.getEvents = async (idClass, client) => {
     const {rows: events} = await client.query("SELECT id, Name, date, description FROM Event WHERE ID = $1", [idClass]);
     return events;
