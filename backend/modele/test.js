@@ -1,49 +1,123 @@
-//id, maxValue,subjectName,idclass
-//permets de simuler une base de données
-//todo
-const tests = [
-    {id: 1, maxValue:20,subjectName:"test",idclass:1},
-    {id: 2, maxValue:20,subjectName:"test",idclass:1},
-    {id: 3, maxValue:20,subjectName:"test",idclass:1}
-]
+/**
+ * @swagger
+ *  components:
+ *   schemas:
+ *      Test:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: integer
+ *              title:
+ *                  type: string
+ *                  format: CHAR(255)
+ *              maxvalue:
+ *                  type: string
+ *                  format: integer
+ *              result:
+ *                  type: integer
+ *              note:
+ *                  type: string
+ *              date:
+ *                  type: string
+ *                  format: 'DDD MMM YYY'
+ *              category:
+ *                  type: string
+ *                  format: CHAR(255)
+ *              schoolsubject:
+ *                  type: string
+ *                  format: CHAR(255)
+ *          example:
+ *              id: 18
+ *              title: 'interrogation de grammaire'
+ *              date: '25 Nov 2020'
+ *              category: 'Géométrie'
+ *              schoolsubject: 'Mathémathiques'
+ */
 
-module.exports.getTest = (id) => {
-    const resultats = tests.filter(p => p.id === id);
-    if(resultats.length > 0){
-        return resultats[0];
-    } else {
-        throw new Error("Aucun produit trouvé");
-    }
+/*
+        SELECT test.id as id, test.title as title, test.maxvalue as maxvalue, TO_CHAR(test.date, 'DD Mon YYYY') as date, SchoolSubjectSubCategory.name as category, SchoolSubjectCategory.name as schoolsubject
+        FROM test
+        LEFT JOIN SchoolSubjectSubCategory
+        ON SchoolSubjectSubCategory.id = test.idSchoolSubjectSubCategory
+        LEFT JOIN SchoolSubjectCategory
+        ON SchoolSubjectCategory.id = SchoolSubjectSubCategory.IdSchoolSubjectCategory
+        WHERE IdClass = 1
+            and (date between (current_date + '1 day':: interval) and (current_date + '1 day':: interval + '1 week':: interval))
+* */
+module.exports.getTests = async (idClass, client) => {
+    const {rows: tests} = await client.query(`
+        SELECT test.id as id, test.title as title, test.maxvalue as maxvalue, TO_CHAR(test.date, 'DD Mon YYYY') as date, SchoolSubjectSubCategory.name as category, SchoolSubjectCategory.name as schoolsubject
+        FROM test
+            LEFT JOIN SchoolSubjectSubCategory
+        ON SchoolSubjectSubCategory.id = test.idSchoolSubjectSubCategory
+            LEFT JOIN SchoolSubjectCategory
+            ON SchoolSubjectCategory.id = SchoolSubjectSubCategory.IdSchoolSubjectCategory
+        WHERE IdClass = $1
+    `, [idClass]);
+    return tests;
 }
 
-module.exports.postTest = (id, maxValue,subjectName,idclass) => {
-    tests.push({
-        id,
-        maxValue,
-        subjectName,
-        idclass
-    });
-    return true;
+module.exports.getTodayTestsByClassId = async (idClass, client) => {
+    const {rows: tests} = await client.query(`
+        SELECT test.id as id, test.title as title, test.maxvalue as maxvalue, TO_CHAR(test.date, 'DD Mon YYYY') as date, SchoolSubjectSubCategory.name as category, SchoolSubjectCategory.name as schoolsubject
+        FROM test
+            LEFT JOIN SchoolSubjectSubCategory
+        ON SchoolSubjectSubCategory.id = test.idSchoolSubjectSubCategory
+            LEFT JOIN SchoolSubjectCategory
+            ON SchoolSubjectCategory.id = SchoolSubjectSubCategory.IdSchoolSubjectCategory
+        WHERE IdClass = $1
+          and date = current_date
+    `, [idClass]);
+    return tests;
 }
 
-module.exports.updateTest = (id, maxValue,subjectName) => {
-    for(let i = 0; i < produits.length; i++){
-        if(tests[i].id === id){
-            tests[i].maxValue = maxValue;
-            tests[i].subjectName = subjectName;
-            tests[i].idclass = idclass;
-            return true;
-        }
-    }
-    return false;
+module.exports.getWeekTestsByClassId = async (idClass, client) => {
+    const {rows: tests} = await client.query(`
+        SELECT test.id as id, test.title as title, test.maxvalue as maxvalue, TO_CHAR(test.date, 'DD Mon YYYY') as date, SchoolSubjectSubCategory.name as category, SchoolSubjectCategory.name as schoolsubject
+        FROM test
+        LEFT JOIN SchoolSubjectSubCategory
+        ON SchoolSubjectSubCategory.id = test.idSchoolSubjectSubCategory
+        LEFT JOIN SchoolSubjectCategory
+        ON SchoolSubjectCategory.id = SchoolSubjectSubCategory.IdSchoolSubjectCategory
+        WHERE IdClass = $1
+          and (date between (current_date + '1 day':: interval) and (current_date + '1 day':: interval + '1 week':: interval))
+    `, [idClass]);
+    return tests;
 }
 
-module.exports.deleteTest = (id) => {
-    for (let i = 0; i < tests.length; i++){
-        if(tests[i].id === id){
-            tests.splice(i, 1);
-            return true;
-        }
-    }
-    return true;
+module.exports.getUnsignedTests = async (idPupil, client) => {
+    const {rows: tests} = await client.query(`
+        SELECT test.id as idTest, test.title as title,TestResult.result as result , TestResult.note as note, test.maxvalue as maxvalue, TO_CHAR(test.date, 'DD Mon YYYY') as date, SchoolSubjectSubCategory.name as category, SchoolSubjectCategory.name as schoolsubject
+        FROM TestResult
+            LEFT JOIN Test
+        ON Test.id = TestResult.idTest
+            LEFT JOIN SchoolSubjectSubCategory
+            ON SchoolSubjectSubCategory.id = test.idSchoolSubjectSubCategory
+            LEFT JOIN SchoolSubjectCategory
+            ON SchoolSubjectCategory.id = SchoolSubjectSubCategory.IdSchoolSubjectCategory
+        WHERE idPupil = $1 and SignedBy IS NULL
+    `, [idPupil]);
+    return tests;
+}
+
+module.exports.addTest = async (title, maxValue, date, idSchoolSubjectSubCategory, idClass, client) => {
+    const {rows: id} = await client.query(`
+        INSERT INTO Test(title, maxValue, date, idSchoolSubjectSubCategory, idClass)
+        VALUES ($1, $2, $3, $4, $5) RETURNING id;`, [title, maxValue, date, idSchoolSubjectSubCategory, idClass]);
+    return id;
+}
+
+module.exports.updateTest = async (id,title, maxValue, date, idSchoolSubjectSubCategory, idClass, client) => {
+    const query =  `UPDATE Test
+        SET 
+            title = $2
+            maxvalue = $3
+            date = $4
+            IdSchoolSubjectSubCategory = $5
+            idClass = $6
+        WHERE id = $1`;
+    return await client.query(query, [id,title, maxValue, date, idSchoolSubjectSubCategory, idClass]);
+}
+module.exports.deleteTest = async (id,client) => {
+    return await client.query("DELETE FROM Test WHERE id=$1", [id]);
 }

@@ -60,3 +60,22 @@ module.exports.addPupil = async (req, res) => {
         client.release();
     }
 }
+
+module.exports.signTest = async(req, res) => {
+    const client = await pool.connect();
+    const idTutor = req.user.id;
+    const idTestText = req.params.id; //attention ! Il s'agit de texte !
+    const idTest = parseInt(idTestText);
+    if(isNaN(idTest)){
+        res.sendStatus(400);
+    } else {
+        //todo vérifier que ce parent à bien l'authorisation de signer ce document là
+        const response = TestResultModel.signTest(idTest,idTutor,client);
+        if(response){
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
+    }
+}
+

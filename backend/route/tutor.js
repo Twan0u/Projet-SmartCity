@@ -93,4 +93,5 @@ router.get('/pupils',authToken,permit("tutor"), TutorController.getPupils);
  */
 router.post('/add/pupil',authToken,permit("tutor"), TutorController.addPupil);
 
+//router.patch('/test/sign/:id',TutorController.signTest);//todo
 module.exports = router;

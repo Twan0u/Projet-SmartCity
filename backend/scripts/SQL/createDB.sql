@@ -1,11 +1,11 @@
 DROP TABLE IF EXISTS Teacher CASCADE;
 CREATE TABLE Teacher (
-                         ID SERIAL PRIMARY KEY,
-                         FirstName varchar(255) NOT NULL,
-                         LastName varchar(255) NOT NULL,
-                         Login varchar(255) UNIQUE NOT NULL,
-                         Password varchar(255) NOT NULL,
-                         IdClass INT REFERENCES Class(ID)
+    ID SERIAL PRIMARY KEY,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Login varchar(255) UNIQUE NOT NULL,
+    Password varchar(255) NOT NULL,
+    IdClass INT REFERENCES Class(ID)
 );
 INSERT INTO Teacher (FirstName,LastName,Login,Password,IdClass)
 VALUES
@@ -17,8 +17,8 @@ VALUES
 
 DROP TABLE IF EXISTS SchoolSubjectCategory CASCADE;
 CREATE TABLE SchoolSubjectCategory(
-                                      ID SERIAL PRIMARY KEY,
-                                      Name Varchar(255) NOT NULL
+    ID SERIAL PRIMARY KEY,
+    Name Varchar(255) NOT NULL
 );
 INSERT INTO SchoolSubjectCategory(Name)
 VALUES
@@ -29,9 +29,9 @@ VALUES
 
 DROP TABLE IF EXISTS SchoolSubjectSubCategory CASCADE;
 CREATE TABLE SchoolSubjectSubCategory(
-                                         ID SERIAL PRIMARY KEY,
-                                         Name Varchar(255) NOT NULL,
-                                         IdSchoolSubjectCategory INT REFERENCES SchoolSubjectCategory(ID)
+    ID SERIAL PRIMARY KEY,
+    Name Varchar(255) NOT NULL,
+    IdSchoolSubjectCategory INT REFERENCES SchoolSubjectCategory(ID)
 );
 INSERT INTO SchoolSubjectSubCategory(Name, IdSchoolSubjectCategory)
 VALUES
@@ -43,10 +43,10 @@ VALUES
 
 DROP TABLE IF EXISTS Class CASCADE;
 CREATE TABLE Class (
-                       ID SERIAL PRIMARY KEY,
-                       Year int NOT NULL,
-                       Letter varchar(255) NOT NULL,
-                       UNIQUE (Year,Letter)
+    ID SERIAL PRIMARY KEY,
+    Year int NOT NULL,
+    Letter varchar(255) NOT NULL,
+    UNIQUE (Year,Letter)
 );
 INSERT INTO Class (Year,Letter)
 VALUES
@@ -57,11 +57,11 @@ VALUES
 
 DROP TABLE IF EXISTS Event CASCADE;
 CREATE TABLE Event(
-                      ID SERIAL PRIMARY KEY,
-                      Name varchar(255) NOT NULL,
-                      Date DATE NOT NULL,
-                      Description varchar(255),
-                      IdClass INT REFERENCES Class(ID)
+    ID SERIAL PRIMARY KEY,
+    Name varchar(255) NOT NULL,
+    Date DATE NOT NULL,
+    Description varchar(255),
+    IdClass INT REFERENCES Class(ID)
 );
 INSERT INTO Event(Name, Date, Description, IdClass)
 VALUES
@@ -72,13 +72,13 @@ VALUES
 
 DROP TABLE IF EXISTS Pupil CASCADE;
 CREATE TABLE Pupil(
-                      ID SERIAL PRIMARY KEY,
-                      Login varchar(255) UNIQUE NOT NULL,
-                      Password varchar(255) NOT NULL,
-                      FirstName varchar(255) NOT NULL,
-                      LastName varchar(255) NOT NULL,
-                      Birthdate DATE NOT NULL,
-                      IdClass INT REFERENCES Class(ID) NOT NULL
+    ID SERIAL PRIMARY KEY,
+    Login varchar(255) UNIQUE NOT NULL,
+    Password varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    Birthdate DATE NOT NULL,
+    IdClass INT REFERENCES Class(ID) NOT NULL
 );
 INSERT INTO Pupil(Login, Password, FirstName, LastName, Birthdate, IdClass)
 VALUES
@@ -87,12 +87,12 @@ VALUES
 
 DROP TABLE IF EXISTS Tutor CASCADE;
 CREATE TABLE Tutor(
-                      ID SERIAL PRIMARY KEY,
-                      Login varchar(255) UNIQUE NOT NULL,
-                      Password varchar(255) NOT NULL,
-                      FirstName varchar(255) NOT NULL,
-                      LastName varchar(255) NOT NULL,
-                      PhoneNumber varchar(255) NOT NULL
+    ID SERIAL PRIMARY KEY,
+    Login varchar(255) UNIQUE NOT NULL,
+    Password varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    PhoneNumber varchar(255) NOT NULL
 );
 INSERT INTO Tutor(Login, Password, FirstName, LastName, PhoneNumber)
 VALUES
@@ -100,9 +100,9 @@ VALUES
 
 DROP TABLE IF EXISTS Responsible CASCADE;
 CREATE TABLE Responsible(
-                            ID SERIAL PRIMARY KEY,
-                            IdTutor INT REFERENCES Tutor(ID) NOT NULL,
-                            IdPupil INT REFERENCES Pupil(ID) NOT NULL
+    ID SERIAL PRIMARY KEY,
+    IdTutor INT REFERENCES Tutor(ID) NOT NULL,
+    IdPupil INT REFERENCES Pupil(ID) NOT NULL
 );
 INSERT INTO Responsible(IdPupil,IdTutor)
 VALUES
@@ -143,12 +143,13 @@ VALUES
 
 DROP TABLE IF EXISTS Test CASCADE;
 CREATE TABLE Test(
-                     ID SERIAL PRIMARY KEY,
-                     Title Varchar(255) NOT NULL,
-                     MaxValue INT NOT NULL,
-                     Date DATE NOT NULL,
-                     IdSchoolSubjectSubCategory INT REFERENCES SchoolSubjectSubCategory(ID) NOT NULL,
-                     IdClass INT REFERENCES Class(ID)
+    ID SERIAL PRIMARY KEY,
+    Title Varchar(255) NOT NULL,
+    MaxValue INT NOT NULL,
+    Date DATE NOT NULL,
+
+    IdSchoolSubjectSubCategory INT REFERENCES SchoolSubjectSubCategory(ID) NOT NULL,
+    IdClass INT REFERENCES Class(ID)
 );
 INSERT INTO Test(Title, MaxValue,Date, IdSchoolSubjectSubCategory, IdClass)
 VALUES
@@ -157,11 +158,12 @@ VALUES
 
 DROP TABLE IF EXISTS TestResult CASCADE;
 CREATE TABLE TestResult(
-                           ID SERIAL PRIMARY KEY,
-                           Result INT,
-                           note Varchar(255),
-                           IdTest INT REFERENCES Test(ID),
-                           IdPupil INT REFERENCES Pupil(ID)
+    ID SERIAL PRIMARY KEY,
+    Result INT,
+    note Varchar(255),
+    IdTest INT REFERENCES Test(ID),
+    SignedBy INT REFERENCES Tutor(ID),
+    IdPupil INT REFERENCES Pupil(ID)
 );
 INSERT INTO TestResult(Result, note, IdTest, IdPupil)
 VALUES
