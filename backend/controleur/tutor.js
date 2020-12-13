@@ -11,16 +11,15 @@ module.exports.getPupils = async (req, res) => {
     const client = await pool.connect();
     try{
         let pupils = await TutorModel.getPupils(req.user.id,client);
+        let response = [{}];
         for(let i=0;i<pupils.length;i++){
-            pupils[i].token = jwt.sign(pupils[i], process.env.ACCESS_TOKEN_SECRET);
+            response[i].firstname = pupils[i].firstname;
+            response[i].lastname = pupils[i].lastname;
+            response[i].token = jwt.sign(pupils[i], process.env.ACCESS_TOKEN_SECRET);
         }
-
-        if(pupils !== undefined){
-            res.status(200).json(pupils);
-        } else {
-            res.sendStatus(500);
-        }
+            return res.status(200).json(response);
     } catch (error){
+        console.log(error)
         res.sendStatus(500);
     } finally {
         client.release();
