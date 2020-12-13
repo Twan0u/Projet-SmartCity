@@ -5,11 +5,11 @@ module.exports.loginTutor = async (username, client) => {
 module.exports.getPupils = async (id, client) => {
     const {rows: pupils} = await client.query(`
 
-        select pupil.id,pupil.login,pupil.firstname,pupil.lastname,pupil.birthdate,pupil.idclass, 'pupil' as role
-        from pupil
-        INNER JOIN responsible ON pupil.id = responsible.idpupil
-        INNER JOIN tutor ON responsible.idresponsible = tutor.id
-        where tutor.id = $1
+        select Pupil.id,Pupil.login,Pupil.firstname,Pupil.lastname,Pupil.birthdate,Pupil.idclass, 'pupil' as role
+        from Pupil
+        INNER JOIN Responsible ON Pupil.id = Responsible.idpupil
+        INNER JOIN Tutor ON Responsible.idTutor = Tutor.id
+        where Tutor.id = $1
         
         `, [id]);
     return pupils;
